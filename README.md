@@ -472,5 +472,3 @@ University of Antwerp - Master in Computer Science Project
 ## 👤 Author
 
 **Hala Alramli**
-Master's Student in Computer Science
-University of Antwerp
