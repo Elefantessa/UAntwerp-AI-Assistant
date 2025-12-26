@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAntwerp AI Assistant | Academic Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-700: #1e293b;
+            --dark-600: #334155;
+            --dark-500: #475569;
+            --light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark);
+            min-height: 100vh;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 48px 24px;
+            position: relative;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            color: #94a3b8;
+            font-size: 15px;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 24px;
+            line-height: 1.6;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            font-size: 13px;
+            color: #cbd5e1;
+            backdrop-filter: blur(10px);
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-light);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            background: var(--dark-700);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .chat-header-text h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .chat-header-text p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 24px;
+            background: var(--dark-600);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            background: var(--dark-700);
+            border: 2px solid var(--dark-500);
+            border-radius: 16px;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+
+        #queryInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: #f1f5f9;
+            outline: none;
+            font-family: inherit;
+        }
+
+        #queryInput::placeholder {
+            color: #64748b;
+        }
+
+        #askButton {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        #askButton:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        #askButton:active {
+            transform: scale(0.98);
+        }
+
+        /* Response Area */
+        #responseArea {
+            padding: 24px;
+            min-height: 200px;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+            color: #94a3b8;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--dark-500);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .response-card {
+            background: var(--dark-600);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .response-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .response-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--success), #059669);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .response-body {
+            padding: 20px;
+        }
+
+        .response-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #e2e8f0;
+            white-space: pre-line;
+        }
+
+        /* Metadata Grid */
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .meta-card {
+            background: var(--dark-700);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .meta-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .confidence-bar {
+            height: 6px;
+            background: var(--dark-500);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--accent));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Sources */
+        .sources-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .sources-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .source-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--dark-700);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .source-tag:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+        }
+
+        /* Examples Section */
+        .examples-section {
+            margin-top: 32px;
+        }
+
+        .examples-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .examples-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .examples-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .example-card {
+            background: var(--dark-700);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .example-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .example-card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .example-card-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--glass);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .example-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .example-card-body {
+            padding: 12px;
+        }
+
+        .example-query {
+            padding: 14px 16px;
+            background: var(--dark-600);
+            border: 1px solid transparent;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            transition: all 0.2s ease;
+        }
+
+        .example-query:last-child {
+            margin-bottom: 0;
+        }
+
+        .example-query:hover {
+            background: var(--dark-500);
+            border-color: var(--primary);
+            color: #f1f5f9;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 32px 16px;
+            }
+
+            .logo-text {
+                font-size: 22px;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .input-wrapper {
+                flex-direction: column;
+            }
+
+            #askButton {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <span class="logo-text">UAntwerp AI Assistant</span>
+            </div>
+            <p class="header-subtitle">
+                Intelligent academic guidance powered by advanced RAG technology.
+                Ask about programs, admissions, courses, and more.
+            </p>
+            <div class="badges">
+                <span class="badge"><span class="badge-dot"></span> LangGraph Pipeline</span>
+                <span class="badge">⚡ Cross-Encoder Reranking</span>
+                <span class="badge">🧠 Qwen 2.5 LLM</span>
+            </div>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="systemStatus">●</div>
+                <div class="stat-label">System Status</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="queryCount">0</div>
+                <div class="stat-label">Queries Processed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="successRate">0%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <section class="chat-container">
+            <div class="chat-header">
+                <div class="chat-header-icon">💬</div>
+                <div class="chat-header-text">
+                    <h2>Ask a Question</h2>
+                    <p>Get accurate answers from UAntwerp academic resources</p>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="queryInput"
+                        placeholder="Ask about courses, prerequisites, admissions, tuition..." />
+                    <button id="askButton" onclick="askQuestion()">
+                        <span>Send</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="responseArea">
+                <div style="text-align: center; padding: 48px; color: #64748b;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">🎯</div>
+                    <p>Your response will appear here</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section class="examples-section">
+            <div class="examples-header">
+                <div class="examples-icon">💡</div>
+                <h3>Example Questions</h3>
+            </div>
+
+            <div class="examples-grid">
+                <div class="example-card">
+                    <div class="example-card-header">
+                        <div class="example-card-icon">📚</div>
+                        <span class="example-card-title">Admission Requirements</span>
+                    </div>
+                    <div class="example-card-body">
+                        <div class="example-query"
+                            onclick="setQuery('What are the admission requirements for the Master in Computer Science: Data Science and AI?')">
+                            What are the admission requirements for the Master in Data Science and AI?
+                        </div>
+                        <div class="example-query"
+                            onclick="setQuery('Can I submit my application if I do not yet meet all the requirements but will before the deadline?')">
+                            Can I submit my application before meeting all requirements?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-card-header">
+                        <div class="example-card-icon">💰</div>
+                        <span class="example-card-title">Tuition & Fees</span>
+                    </div>
+                    <div class="example-card-body">
+                        <div class="example-query"
+                            onclick="setQuery('Where can I find the tuition fee information for the Software Engineering track?')">
+                            Where can I find tuition fee information for Software Engineering?
+                        </div>
+                        <div class="example-query"
+                            onclick="setQuery('Who can apply for a tuition fee reduction in the Software Engineering track?')">
+                            Who can apply for a tuition fee reduction?
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by <a href="#">UAntwerp Academic Intelligence</a> • Built with LangGraph & RAG</p>
+        </footer>
+    </div>
+
+    <script>
+        // Load system statistics on page load
+        window.addEventListener('load', function () {
+            loadSystemStats();
+            setInterval(loadSystemStats, 30000);
+        });
+
+        function loadSystemStats() {
+            fetch('/api/stats')
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('systemStatus').innerHTML = '<span style="color: #10b981;">Online</span>';
+                    document.getElementById('queryCount').textContent = data.total_queries || 0;
+                    document.getElementById('successRate').textContent = (data.success_rate || 0).toFixed(1) + '%';
+                })
+                .catch(err => {
+                    document.getElementById('systemStatus').innerHTML = '<span style="color: #ef4444;">Offline</span>';
+                });
+        }
+
+        function setQuery(q) {
+            document.getElementById('queryInput').value = q;
+            document.getElementById('queryInput').focus();
+        }
+
+        function askQuestion() {
+            const q = document.getElementById('queryInput').value.trim();
+            if (!q) return;
+
+            const responseEl = document.getElementById('responseArea');
+            responseEl.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Processing through LangGraph pipeline...</p>
+                </div>
+            `;
+
+            fetch('/api/query', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: q })
+            })
+                .then(r => r.json())
+                .then(data => displayResponse(data))
+                .catch(err => {
+                    responseEl.innerHTML = `
+                        <div class="response-card">
+                            <div class="response-header">
+                                <div class="response-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">⚠️</div>
+                                <div>
+                                    <strong style="color: #f1f5f9;">Error</strong>
+                                    <p style="color: #94a3b8; font-size: 13px;">${err.message}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+        }
+
+        function displayResponse(data) {
+            const el = document.getElementById('responseArea');
+            const sources = data.sources || [];
+            const confidence = data.confidence || 0;
+
+            let confidenceBreakdown = '';
+            if (data.metadata && data.metadata.confidence_breakdown) {
+                const cb = data.metadata.confidence_breakdown;
+                confidenceBreakdown = `
+                    <div class="meta-card" style="grid-column: 1 / -1;">
+                        <div class="meta-label">Confidence Breakdown</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 12px;">
+                            <div>
+                                <span style="color: #94a3b8; font-size: 12px;">Reranking</span>
+                                <div style="color: #f1f5f9; font-weight: 500;">${(cb.rerank_confidence * 100).toFixed(0)}%</div>
+                            </div>
+                            <div>
+                                <span style="color: #94a3b8; font-size: 12px;">Entity Match</span>
+                                <div style="color: #f1f5f9; font-weight: 500;">${(cb.entity_match_confidence * 100).toFixed(0)}%</div>
+                            </div>
+                            <div>
+                                <span style="color: #94a3b8; font-size: 12px;">Source Diversity</span>
+                                <div style="color: #f1f5f9; font-weight: 500;">${(cb.source_diversity_confidence * 100).toFixed(0)}%</div>
+                            </div>
+                            <div>
+                                <span style="color: #94a3b8; font-size: 12px;">Context Complete</span>
+                                <div style="color: #f1f5f9; font-weight: 500;">${(cb.context_completeness_confidence * 100).toFixed(0)}%</div>
+                            </div>
+                            <div>
+                                <span style="color: #94a3b8; font-size: 12px;">Semantic Coherence</span>
+                                <div style="color: #f1f5f9; font-weight: 500;">${(cb.semantic_coherence_confidence * 100).toFixed(0)}%</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            let sourcesHtml = '';
+            if (sources.length) {
+                sourcesHtml = `
+                    <div class="sources-section">
+                        <div class="sources-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            Sources (${sources.length})
+                        </div>
+                        <div>
+                            ${sources.slice(0, 8).map(source => `<span class="source-tag">${source}</span>`).join('')}
+                            ${sources.length > 8 ? `<span class="source-tag">+${sources.length - 8} more</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            const html = `
+                <div class="response-card">
+                    <div class="response-header">
+                        <div class="response-icon">✨</div>
+                        <div>
+                            <strong style="color: #f1f5f9;">AI Response</strong>
+                            <p style="color: #94a3b8; font-size: 13px;">Generated via ${data.generation_mode || 'RAG'}</p>
+                        </div>
+                    </div>
+                    <div class="response-body">
+                        <div class="response-text">${data.answer || 'No answer generated.'}</div>
+
+                        <div class="metadata-grid">
+                            <div class="meta-card">
+                                <div class="meta-label">Confidence</div>
+                                <div class="meta-value">${(confidence * 100).toFixed(0)}%</div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" style="width: ${confidence * 100}%"></div>
+                                </div>
+                            </div>
+                            <div class="meta-card">
+                                <div class="meta-label">Processing Time</div>
+                                <div class="meta-value">${(data.processing_time || 0).toFixed(2)}s</div>
+                            </div>
+                            <div class="meta-card">
+                                <div class="meta-label">Documents Retrieved</div>
+                                <div class="meta-value">${(data.metadata && data.metadata.documents_retrieved) || 0}</div>
+                            </div>
+                            <div class="meta-card">
+                                <div class="meta-label">Contexts Used</div>
+                                <div class="meta-value">${(data.metadata && data.metadata.contexts_used) || 0}</div>
+                            </div>
+                            ${confidenceBreakdown}
+                        </div>
+
+                        ${sourcesHtml}
+                    </div>
+                </div>
+            `;
+            el.innerHTML = html;
+
+            loadSystemStats();
+        }
+
+        // Enter key support
+        document.getElementById('queryInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+    </script>
+</body>
+
+</html>

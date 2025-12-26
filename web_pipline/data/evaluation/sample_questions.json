@@ -1,0 +1,22 @@
+[
+  {
+    "question": "What are the admission requirements for the Master in Computer Science: Data Science and AI?",
+    "ground_truth": "Applicants need a bachelor's degree in Computer Science or related field comparable to UAntwerp's bachelor."
+  },
+  {
+    "question": "How many ECTS credits is the Master in Data Science programme?",
+    "ground_truth": "The Master in Data Science programme is 120 ECTS credits."
+  },
+  {
+    "question": "What are the tuition fees for international students?",
+    "ground_truth": "Tuition fees vary based on nationality and programme."
+  },
+  {
+    "question": "When is the application deadline for the Master programmes?",
+    "ground_truth": "Application deadlines vary, typically March 1st for international students."
+  },
+  {
+    "question": "What programming languages are taught in the Software Engineering track?",
+    "ground_truth": "The programme covers various programming languages and software development practices."
+  }
+]

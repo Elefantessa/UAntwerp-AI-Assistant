@@ -1,0 +1,46 @@
+# UAntwerp RAG Pipeline - Requirements
+# =====================================
+
+# Core Dependencies
+langchain>=1.0.0
+langchain-core>=1.0.0
+langchain-chroma>=1.0.0
+langchain-huggingface>=1.0.0
+langchain-ollama>=1.0.0
+langchain-text-splitters>=1.0.0
+langgraph>=0.2.0
+
+# Vector Database
+chromadb>=1.0.0
+
+# Embeddings & NLP
+sentence-transformers>=2.2.0
+transformers>=4.36.0
+torch>=2.0.0
+
+# Web Scraping
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+aiohttp>=3.9.0
+
+# Web Framework
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# HTTP & API
+requests>=2.31.0
+
+# Utilities
+numpy>=1.24.0
+
+# Optional: Reranking
+# (cross-encoder models are loaded via sentence-transformers)
+
+# Evaluation (RAGAS)
+ragas>=0.1.0
+datasets>=2.14.0
+langchain-openai>=0.1.0
+
+# Optional: Testing
+
+pytest>=7.0.0
