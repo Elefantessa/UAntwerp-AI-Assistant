@@ -1,6 +1,6 @@
 # 🎓 UAntwerp Academic RAG System
 
-> **Enterprise-Grade Retrieval-Augmented Generation Pipeline for University Programme Information**
+> **project-grade (PoC) Retrieval-Augmented Generation Pipeline for University Programme Information**
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![LangChain](https://img.shields.io/badge/LangChain-1.x-green.svg)](https://langchain.com)
@@ -306,7 +306,7 @@ confidence = (
 
 ```bash
 # Clone and setup
-pip install -r web_pipline/pipline/requirements.txt
+pip install -r web_pipeline/pipeline/requirements.txt
 
 # Start Ollama (if not running)
 ollama serve &
@@ -316,7 +316,7 @@ ollama pull llama3.1
 ### Run Indexing Pipeline
 
 ```bash
-cd web_pipline/pipline
+cd web_pipeline/pipeline
 
 # Full pipeline (recommended for first run)
 python run_indexing.py --full
@@ -403,14 +403,14 @@ The system includes comprehensive evaluation capabilities using **RAGAS** (Retri
 ### Running Evaluation
 
 ```bash
-cd web_pipline/pipline
+cd web_pipeline/pipeline
 
 # Make sure the RAG API is running first
 python main.py --persist-dir ../data/db/unified_chroma_db --port 5007
 
 # Run evaluation with recommended model (in another terminal)
 python run_evaluation.py \
-  --questions /web_pipline/data/evaluation/sample_questions.json \
+  --questions /web_pipeline/data/evaluation/sample_questions.json \
   --provider ollama \
   --llm-model qwen2.5:14b \
   --api-url http://127.0.0.1:5007
@@ -456,7 +456,7 @@ The evaluation uses:
 
 ### Output Files
 
-Results are saved to `/web_pipline/data/evaluation/`:
+Results are saved to `/web_pipeline/data/evaluation/`:
 - `rag_results_TIMESTAMP.jsonl` - Detailed RAG responses
 - `ragas_scores_TIMESTAMP.json` - RAGAS metric scores
 - `evaluation_report_TIMESTAMP.md` - Human-readable report
